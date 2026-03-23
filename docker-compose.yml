@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  futebol-image:
+    image: futebol-image:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - PORT=3000
+      - NODE_ENV=production
+    ports:
+      - "3000:3000"
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+      update_config:
+        parallelism: 1
+        delay: 10s
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.futebol-image.rule=Host(`futebol-image.seudominio.com`)"
+        - "traefik.http.routers.futebol-image.entrypoints=websecure"
+        - "traefik.http.routers.futebol-image.tls.certresolver=letsencrypt"
+        - "traefik.http.services.futebol-image.loadbalancer.server.port=3000"
+    networks:
+      - traefik-public
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+
+networks:
+  traefik-public:
+    driver: overlay
+    external: true
