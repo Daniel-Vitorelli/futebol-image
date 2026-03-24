@@ -9,7 +9,9 @@ import { html } from './html.js'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
-const server = fastify()
+const server = fastify({
+  trustProxy: true
+})
 
 server.register(fastifyStatic, {
   root: __dirname
@@ -31,9 +33,15 @@ server.post('/', async (request, reply) => {
     return reply.status(400).send({ error: 'url2 é obrigatório' })
   }
 
-  const host = request.headers['x-forwarded-host'] || request.headers.host
-  const proto = request.headers['x-forwarded-proto'] || 'http'
-  const baseURL = `${proto}://${host}`
+  const host =
+    request.headers['x-forwarded-host'] || request.hostname
+
+  const protocol =
+    request.headers['x-forwarded-proto'] || request.protocol
+
+  const baseURL =
+    process.env.BASE_URL || `${protocol}://${host}`
+  console.log(baseURL)
 
   const page = await browser.newPage()
 
@@ -52,7 +60,7 @@ server.post('/', async (request, reply) => {
   reply.type('image/png').send(buffer)
 })
 
-server.listen({ port: process.env.PORT || 3000 }, (err, address) => {
+server.listen({ port: process.env.PORT || 3000, host: process.env.HOST || '0.0.0.0' }, (err, address) => {
   if (err) {
     console.error(err)
     process.exit(1)
