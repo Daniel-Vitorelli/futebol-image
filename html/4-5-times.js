@@ -1,19 +1,21 @@
-export const html = (url1, url2, baseURL = '') => {
-    const stadium = `${baseURL}/public/estadio.png`
-    const vs = `${baseURL}/public/vs.png`
-    const live = `${baseURL}/public/live.png`
+export const template_4_5_times = ({
+    url1,
+    url2,
+    fundo,
+    texto1,
+    texto2,
+}) => {
 
     return `
-    <html>
+<html>
 <head>
-    <base href="${baseURL}/">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
-<body>
+<body style="margin: 0; padding: 0;">
     <div style="
-        background-image: url('${stadium}');
+        background-image: url('${fundo}');
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
@@ -27,7 +29,7 @@ export const html = (url1, url2, baseURL = '') => {
         width: 1080px;
         left: 0;
         top: 183.4px;
-        background: linear-gradient(to right, rgb(0, 10, 10), rgb(0, 130, 100));
+        overflow: hidden;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -40,7 +42,7 @@ export const html = (url1, url2, baseURL = '') => {
             font-family: 'Montserrat', sans-serif;
             margin: 0;
         ">
-            Free app to watch football
+            ${texto1 || "Free app to watch football"}
         </h1>
     </div>
     <img src="${url1}" style="
@@ -51,14 +53,6 @@ export const html = (url1, url2, baseURL = '') => {
         left: 10px;
         object-fit: contain;
     ">
-    <img src="${vs}" style="
-        position: absolute;
-        width: 317.5px;
-        height: 369.2px;
-        top: 478px;
-        left: 50%;
-        transform: translateX(-50%);
-    ">
     <img src="${url2}" style="
         position: absolute;
         width: 369.2px;
@@ -67,21 +61,13 @@ export const html = (url1, url2, baseURL = '') => {
         right: 10px;
         object-fit: contain;
     ">
-    <img src="${live}" style="
-        position: absolute;
-        width: 184.9px;
-        height: 78.6px;
-        top: 929.3px;
-        left: 15.6px;
-        object-fit: contain;
-    ">
     <div style="
         position: absolute;
         height: 162px;
         width: 1080px;
         left: 0;
         top: 1038.5px;
-        background: linear-gradient(to right, rgb(0, 10, 10), rgb(0, 130, 100));
+        overflow: hidden;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -94,7 +80,7 @@ export const html = (url1, url2, baseURL = '') => {
             font-family: 'Montserrat', sans-serif;
             margin: 0;
         ">
-            Download the application
+            ${texto2 || "Download the application"}
         </h1>
     </div>
 </div>

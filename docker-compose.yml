@@ -1,37 +1,39 @@
 version: '3.8'
 
 services:
-  futebol-image:
+  api-image:
     image: futebol-image:latest
-    build:
-      context: .
-      dockerfile: Dockerfile
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     environment:
       - PORT=3000
       - NODE_ENV=production
-    ports:
-      - "3000:3000"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - equinox-net
     deploy:
-      replicas: 2
+      replicas: 1
       restart_policy:
         condition: on-failure
         delay: 5s
         max_attempts: 3
-      update_config:
-        parallelism: 1
-        delay: 10s
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.futebol-image.rule=Host(`futebol-image.seudominio.com`)"
-        - "traefik.http.routers.futebol-image.entrypoints=websecure"
-        - "traefik.http.routers.futebol-image.tls.certresolver=letsencrypt"
-        - "traefik.http.services.futebol-image.loadbalancer.server.port=3000"
-    networks:
-      - traefik-public
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
+        - "traefik.http.services.api-image-service.loadbalancer.server.port=3000"
+
+        # HTTPS via Let's Encrypt
+        - "traefik.http.routers.api-image-main.rule=Host(`api-image.ai-equinox.com`)"
+        - "traefik.http.routers.api-image-main.entrypoints=websecure"
+        - "traefik.http.routers.api-image-main.tls=true"
+        - "traefik.http.routers.api-image-main.tls.certresolver=letsencryptresolver"
+        - "traefik.http.routers.api-image-main.service=api-image-service"
+
+        # HTTP por IP (opcional)
+        - "traefik.http.routers.api-image-ip.rule=HostRegexp(`{host:5\\.189\\.166\\.47}`)"
+        - "traefik.http.routers.api-image-ip.entrypoints=web"
+        - "traefik.http.routers.api-image-ip.service=api-image-service"
 
 networks:
-  traefik-public:
-    driver: overlay
+  equinox-net:
     external: true
