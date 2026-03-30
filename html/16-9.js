@@ -1,4 +1,4 @@
-export const template_1200_628_times = ({
+export const template_16_9 = ({
     url1,
     url2,
     fundo,
@@ -19,16 +19,16 @@ export const template_1200_628_times = ({
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
-        height: 628px;
-        width: 1200px;
+        height: 1080px;
+        width: 1920px;
         position: relative;
     ">
     <div style="
         position: absolute;
-        height: 202.7px;
-        width: 1200px;
+        height: 247.2px;
+        width: 1920px;
         left: 0;
-        top: 0;
+        top: 30px;
         overflow: hidden;
         display: flex;
         justify-content: center;
@@ -36,8 +36,8 @@ export const template_1200_628_times = ({
     ">
         <h1 
             style="color: #e8eb28;
-            font-size: 73.7px;
-            line-height: 73.7px;
+            font-size: ${texto1.length > 40 ? '80px' : '93px'};
+            line-height: ${texto1.length > 40 ? '80px' : '93px'};
             text-align: center;
             font-family: 'Montserrat', sans-serif;
             margin: 0;
@@ -47,26 +47,28 @@ export const template_1200_628_times = ({
     </div>
     <img src="${url1}" style="
         position: absolute;
-        width: 196px;
-        height: 196px;
-        top: 216px;
-        left: 328.5px;
+        width: 369.2px;
+        height: 369.2px;
+        top: 50%;
+        right: 50%;
+        transform: translate(-300px, -50%);
         object-fit: contain;
     ">
     <img src="${url2}" style="
         position: absolute;
-        width: 196px;
-        height: 196px;
-        top: 216px;
-        left: 675.6px;
+        width: 369.2px;
+        height: 369.2px;
+        top: 50%;
+        left: 50%;
+        transform: translate(300px, -50%);
         object-fit: contain;
     ">
     <div style="
         position: absolute;
-        height: 130.2px;
-        width: 1200px;
+        height: 162px;
+        width: 1920px;
         left: 0;
-        top: 497.8px;
+        bottom: 30px;
         overflow: hidden;
         display: flex;
         justify-content: center;
@@ -74,8 +76,8 @@ export const template_1200_628_times = ({
     ">
         <h1 
             style="color: #e8eb28;
-            font-size: 70.4px;
-            line-height: 70.4px;
+            font-size: 70px;
+            line-height: 70px;
             text-align: center;
             font-family: 'Montserrat', sans-serif;
             margin: 0;

@@ -4,8 +4,10 @@ import fastify from 'fastify'
 import puppeteer from 'puppeteer'
 import { fileURLToPath } from 'url'
 import { dirname } from 'path'
-import { template_4_5_times } from './html/4-5-times.js'
-import { template_1200_628_times } from './html/1200-628-times.js'
+import { template_4_5 } from './html/4-5.js'
+import { template_9_16 } from './html/9-16.js'
+import { template_1_1 } from './html/1-1.js'
+import { template_16_9 } from './html/16-9.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -46,7 +48,7 @@ server.post('/', async (request, reply) => {
     return reply.status(400).send({ error: 'fundo é obrigatório' })
   }
   if (!type) {
-    return reply.status(400).send({ error: 'type é obrigatório, use 4:5-times' })
+    return reply.status(400).send({ error: 'type é obrigatório, use 4-5 ou 9-16 ou 1-1' })
   }
 
   const data = {
@@ -61,16 +63,24 @@ server.post('/', async (request, reply) => {
   let height = 1080
 
   switch (type) {
-    case '4:5-times':
+    case '4-5':
       width = 1080
       height = 1350
       break
-    case '1200:628-times':
-      width = 1200
-      height = 628
+    case '9-16':
+      width = 1080
+      height = 1920
+      break
+    case '1-1':
+      width = 1080
+      height = 1080
+      break
+    case '16-9':
+      width = 1920
+      height = 1080
       break
     default:
-      return reply.status(400).send({ error: 'Tipo de imagem inválido, use 4:5-times ou 1200:628-times' })
+      return reply.status(400).send({ error: 'Tipo de imagem inválido, use 4-5 ou 9-16 ou 1-1' })
   }
 
   const page = await browser.newPage()
@@ -79,23 +89,29 @@ server.post('/', async (request, reply) => {
   
   let htmlContent = ''
   switch (type) {
-    case '4:5-times':
-      htmlContent = template_4_5_times({ ...data })
+    case '4-5':
+      htmlContent = template_4_5({ ...data })
       break
-    case '1200:628-times':
-      htmlContent = template_1200_628_times({ ...data })
+    case '9-16':
+      htmlContent = template_9_16({ ...data })
+      break
+    case '1-1':
+      htmlContent = template_1_1({ ...data })
+      break
+    case '16-9':
+      htmlContent = template_16_9({ ...data })
       break
     default:
       return reply.status(400).send({ error: 'Tipo de imagem inválido' })
   }
-  
+
   await page.setContent(htmlContent, {
     waitUntil: 'networkidle0'
   })
 
   const buffer = await page.screenshot({
     type: 'jpeg',
-    clip: { x: 0, y: 0, width, height }
+    clip: { x: 0, y: 0, width, height },
   })
 
   await page.close()
@@ -103,7 +119,8 @@ server.post('/', async (request, reply) => {
   console.log({
     message: 'Imagem gerada com sucesso',
     ...data,
-    type
+    type,
+    timeStamp: new Date().toISOString()
   })
 
   reply.type('image/jpeg').send(buffer)
