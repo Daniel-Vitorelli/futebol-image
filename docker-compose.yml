@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   api-image:
-    image: futebol-image-git:latest
+    image: futebol-image:latest
     extra_hosts:
       - "host.docker.internal:host-gateway"
     environment:
