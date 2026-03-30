@@ -2,11 +2,8 @@ version: '3.8'
 
 services:
   api-image:
-    # A seção build indica ao Portainer para criar a imagem localmente
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: futebol-image:latest
+    # O Swarm agora baixa a imagem pronta do registro do GitHub
+    image: ghcr.io/daniel-vitorelli/futebol-image:latest
     extra_hosts:
       - "host.docker.internal:host-gateway"
     environment:
@@ -25,15 +22,11 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.http.services.api-image-service.loadbalancer.server.port=3000"
-
-        # HTTPS via Let's Encrypt
         - "traefik.http.routers.api-image-main.rule=Host(`api-image.ai-equinox.com`)"
         - "traefik.http.routers.api-image-main.entrypoints=websecure"
         - "traefik.http.routers.api-image-main.tls=true"
         - "traefik.http.routers.api-image-main.tls.certresolver=letsencryptresolver"
         - "traefik.http.routers.api-image-main.service=api-image-service"
-
-        # HTTP por IP (opcional)
         - "traefik.http.routers.api-image-ip.rule=HostRegexp(`{host:5\\.189\\.166\\.47}`)"
         - "traefik.http.routers.api-image-ip.entrypoints=web"
         - "traefik.http.routers.api-image-ip.service=api-image-service"
