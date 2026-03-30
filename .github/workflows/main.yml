@@ -15,6 +15,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # Este passo extra converte o nome para minúsculo para evitar o erro do Docker
+      - name: Lowercase repo name
+        run: |
+          echo "IMAGE_TAG=ghcr.io/${GITHUB_REPOSITORY,,}:latest" >> $GITHUB_ENV
+
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
@@ -27,5 +32,5 @@ jobs:
         with:
           context: .
           push: true
-          # Note que aqui usamos tudo em minúsculo automaticamente
-          tags: ghcr.io/${{ github.repository }}:latest
+          # Usamos a variável que criamos acima (já em minúsculo)
+          tags: ${{ env.IMAGE_TAG }}
