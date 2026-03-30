@@ -2,6 +2,10 @@ version: '3.8'
 
 services:
   api-image:
+    # A seção build indica ao Portainer para criar a imagem localmente
+    build:
+      context: .
+      dockerfile: Dockerfile
     image: futebol-image:latest
     extra_hosts:
       - "host.docker.internal:host-gateway"
