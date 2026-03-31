@@ -12,6 +12,15 @@ export const template_1_1 = ({
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <style>
+        /* Força a renderização mais nítida possível */
+        img {
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+            transform-style: preserve-3d;
+            backface-visibility: hidden;
+        }
+    </style>
 </head>
 <body style="margin: 0; padding: 0;">
     <div style="
@@ -25,7 +34,7 @@ export const template_1_1 = ({
     ">
     <div style="
         position: absolute;
-        height: 247.2px;
+        height: 247px;
         width: 1080px;
         left: 0;
         top: 30px;
@@ -47,8 +56,8 @@ export const template_1_1 = ({
     </div>
     <img src="${url1}" style="
         position: absolute;
-        width: 369.2px;
-        height: 369.2px;
+        width: 370px;
+        height: 370px;
         top: 50%;
         transform: translateY(-50%);
         left: 10px;
@@ -56,8 +65,8 @@ export const template_1_1 = ({
     ">
     <img src="${url2}" style="
         position: absolute;
-        width: 369.2px;
-        height: 369.2px;
+        width: 370px;
+        height: 370px;
         top: 50%;
         transform: translateY(-50%);
         right: 10px;

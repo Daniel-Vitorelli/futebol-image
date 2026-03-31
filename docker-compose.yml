@@ -9,6 +9,7 @@ services:
     environment:
       - PORT=3000
       - NODE_ENV=production
+      - API_SECRET_KEY=${API_SECRET_KEY}
     volumes:
       - /etc/localtime:/etc/localtime:ro
     networks:

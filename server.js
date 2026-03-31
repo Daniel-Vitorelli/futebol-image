@@ -55,8 +55,22 @@ server.get('/', async () => {
   return { status: 'ok' }
 })
 
+// Middleware de Autenticação
+const authenticate = async (request, reply) => {
+  const apiKey = request.headers['x-api-key'] // Pega a chave enviada no cabeçalho
+
+  // Compara com a chave que está no seu .env
+  if (!apiKey || apiKey !== process.env.API_SECRET_KEY) {
+    // Se não tiver chave ou for inválida, barra a requisição com status 401 (Unauthorized)
+    reply.status(401).send({ error: 'Acesso não autorizado. Chave de API inválida.' })
+  }
+}
+
 // Rota POST utilizando o schema para barrar requisições inválidas automaticamente
-server.post('/', { schema: postBodySchema }, async (request, reply) => {
+server.post('/', { 
+  schema: postBodySchema, 
+  preHandler: authenticate
+}, async (request, reply) => {
   const { url1, url2, fundo, texto1, texto2, type } = request.body
 
   const { width, height, template } = templatesMap[type]
